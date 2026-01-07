@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -28,50 +28,33 @@ class UsersController extends Controller
         return view('users.createUser');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-
-        $user = User::findOrFail($id);
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        $user->save();
-
-
+        $user->update($validated);
 
         return redirect()->route('users')->with('status', 'User updated');
     }
 
     public function save(Request $request)
     {
-        $user = new User();
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        $user->password = Hash::make($request->password);
-
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $user->save();
+        User::create($validated);
 
-        return redirect()->route('users')->with('status', 201);
+        return redirect()->route('users')->with('status', 'User created successfully');
     }
 
-    public function delete($id)
+    public function delete(User $user)
     {
-        $user = User::findOrFail($id);
-
         $user->delete();
         return redirect()->route('users')->with('status', 'Deleted correctly');
     }
