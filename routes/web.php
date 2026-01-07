@@ -16,14 +16,13 @@ Route::middleware([
 
     Route::get('/users', [UsersController::class, 'index'])->name('users');
 
-    Route::get('/user/{id}', [UsersController::class, 'userById'])->name('details');
+    Route::get('/user/{user}', [UsersController::class, 'userById'])->name('details');
 
-
-    Route::get('/user/{id}/edit', [UsersController::class, 'edit'])->name('edit');
-    Route::patch('/user/{id}', [UsersController::class, 'update'])->name('update');
+    Route::get('/user/{user}/edit', [UsersController::class, 'edit'])->name('edit');
+    Route::patch('/user/{user}', [UsersController::class, 'update'])->name('update');
 
     Route::get('/create', [UsersController::class, 'createUser'])->name('create');
     Route::post('/save', [UsersController::class, 'save'])->name('save');
 
-    Route::delete('/delete/{id}', [UsersController::class, 'delete'])->name('delete');
+    Route::delete('/delete/{user}', [UsersController::class, 'delete'])->name('delete');
 });
