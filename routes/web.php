@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\AuditController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,4 +26,7 @@ Route::middleware([
     Route::post('/save', [UsersController::class, 'save'])->name('save');
 
     Route::delete('/delete/{user}', [UsersController::class, 'delete'])->name('delete');
+
+    Route::get('/audits', [AuditController::class, 'getAudits'])->name('audits');
+
 });
